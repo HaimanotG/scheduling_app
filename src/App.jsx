@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import GlobalStyles from "./GlobalStyles";
 import { darkTheme, lightTheme } from "./themes";
@@ -9,12 +10,11 @@ import localStore from "./_helpers/localStore";
 import UserRole from "./_helpers/UserRole";
 import AuthServices from "./_services/AuthServices";
 
-import { Header, Footer, UserForm } from './_components';
-import {
-    Admin, DeanList, CollegeCreationForm, CollegeList
-} from "./AdminPages";
+import { Header, Footer, UserForm, Breadcrumbs } from './_components';
+import { Admin, DeanList, CollegeCreationForm, CollegeList } from "./AdminPages";
 
 import { Home, NotFound, Login } from "./PublicPages";
+import Alert from "./_components/Alert";
 
 const Page = styled.div`
   display: grid;
@@ -46,7 +46,7 @@ class App extends Component {
     async componentDidMount() {
         const user = await localStore.get("user");
         if (user && user.sessionToken) {
-            const { success } = await AuthServices.checkSessionTokenMocked();
+            const { success } = await AuthServices.checkSessionToken();
             if (success) {
                 this.setState({ user });
                 this.props.history.push(this.redirectTo(user.role));
@@ -121,9 +121,10 @@ class App extends Component {
                         onLogout={this.handleLogout}
                         toggleTheme={this.toggleTheme}
                         theme={this.state.theme}
-                        path={this.props.location.pathname}
                     />
                     <MainContent>
+                        <Breadcrumbs path={this.props.location.pathname} />
+                        {this.props.alert.message && <Alert alert={this.props.alert} />}
                         <Switch>
                             <Route exact path="/" component={() => <Home />} />
                             {this.privateRoutes.map(({ path, role, isEditing, component: Component }) => (
@@ -153,5 +154,6 @@ class App extends Component {
         );
     }
 }
-
-export default withRouter(App);
+const AppWithRouter = withRouter(App);
+const mapStateToProps = state => ({ alert: state.ui.alert, theme: state.ui.theme })
+export default connect(mapStateToProps, null)(AppWithRouter);

@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import Container from "../_styled-components/Container";
-import Breadcrumbs from "./BreadCrumbs";
 
 const growIn = keyframes`
     0% {
@@ -16,7 +15,7 @@ const growIn = keyframes`
     }
 `
 const StyledHeader = styled.header`
-    height: 100px;
+    height: 80px;
     padding: 10px;
     background: var(--colorPrimaryDark);
     box-shadow: 2px 4px 10px rgba(0,0,0,.2);
@@ -27,7 +26,6 @@ const StyledHeader = styled.header`
 
 const HeaderBody = styled.div`
     display: flex;
-    flex-direction: column;
 `;
 
 const Actions = styled.div`
@@ -54,10 +52,6 @@ const Action = styled(Link)`
     :hover {
         text-decoration: none;
     }
-`;
-
-const Top = styled.div`
-    display: flex;
 `;
 
 const LetterAvatar = styled.button`
@@ -138,7 +132,7 @@ const SubMenuLink = styled(Link)`
     }
 `;
 
-const Header = ({ isLoggedIn, onLogout, username = "", path, toggleTheme, theme }) => {
+const Header = ({ isLoggedIn, onLogout, username = "", toggleTheme, theme }) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const handleToggleTheme = e => {
@@ -171,21 +165,18 @@ const Header = ({ isLoggedIn, onLogout, username = "", path, toggleTheme, theme 
         <StyledHeader>
             <Container>
                 <HeaderBody>
-                    <Top>
-                        <HeaderText>Scheduling<span>App</span></HeaderText>
-                        <Actions>
-                            {isLoggedIn ?
-                                <Profile>
-                                    <strong>{username}</strong>
-                                    <LetterAvatar onClick={toggleMenu}>
-                                        {username.substr(0, 1)}
-                                    </LetterAvatar>
-                                    {_buildProfileSubMenu(isMenuOpen)}
-                                </Profile> :
-                                <Action to='/login'>Login</Action>}
-                        </Actions>
-                    </Top>
-                    <Breadcrumbs path={path} />
+                    <HeaderText>Scheduling<span>App</span></HeaderText>
+                    <Actions>
+                        {isLoggedIn ?
+                            <Profile>
+                                <strong>{username}</strong>
+                                <LetterAvatar onClick={toggleMenu}>
+                                    {username.substr(0, 1)}
+                                </LetterAvatar>
+                                {_buildProfileSubMenu(isMenuOpen)}
+                            </Profile> :
+                            <Action to='/login'>Login</Action>}
+                    </Actions>
                 </HeaderBody>
             </Container>
         </StyledHeader>

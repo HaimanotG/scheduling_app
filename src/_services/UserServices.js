@@ -1,120 +1,105 @@
-import request from "./index";
 import getAuthHeader from "../_helpers/authHeader";
-import constructResolve from "./constructResolve";
+import axios from './axios';
 
 export default {
-    register: (username, email, password) =>
-        new Promise(async resolve => {
-            const header = await getAuthHeader();
-            request
-                .post(
-                    "/users/register", {
-                        username,
-                        email,
-                        password
-                    },
-                    header.authorization
-                )
-                .then(r => {
-                    const {
-                        body
-                    } = r;
-                    resolve({
-                        success: body.success || true,
-                        body,
-                        error: body.error && body.error.message
-                    });
-                })
-                .catch(e => {
-                    resolve({
-                        success: false,
-                        error: e.message
-                    });
-                });
-        }),
-    getUsers: ({role}) => () =>
-        new Promise(async resolve => {
-            const header = await getAuthHeader();
-            request
-                .get(role ? `/users?role=${role}` : '/users', header.authorization)
-                .then(r => {
-                    const {
-                        body,
-                        error
-                    } = r;
-                    resolve(constructResolve(body, error));
-                })
-                .catch(e => {
-                    resolve({
-                        success: false,
-                        error: e.message
-                    });
-                });
-        }),
-    getUser: id =>
-        new Promise(async resolve => {
-            const header = await getAuthHeader();
-            request
-                .get(`/users/${id}`, header.authorization)
-                .then(r => {
-                    const {
-                        body,
-                        error
-                    } = r;
-                    resolve(constructResolve(body, error, "user"));
-                })
-                .catch(e => {
-                    resolve({
-                        success: false,
-                        error: e.message
-                    });
-                });
-        }),
-    updateUser: (username, email, userId) =>
-        new Promise(async resolve => {
-            const header = await getAuthHeader();
-            request
-                .patch(
-                    `/users/${userId}`, {
-                        username,
-                        email
-                    },
-                    header.authorization
-                )
-                .then(r => {
-                    const {
-                        body,
-                        error
-                    } = r;
-                    resolve(constructResolve(body, error))
-                })
-                .catch(e => {
-                    resolve({
-                        success: false,
-                        error: e.message
-                    });
-                });
-        }),
-    deleteUser: userId =>
-        new Promise(async resolve => {
-            const header = await getAuthHeader();
-            request
-                .delete(`/users/${userId}`, header.authorization)
-                .then(r => {
-                    const {
-                        body
-                    } = r;
-                    resolve({
-                        success: body.success || true,
-                        body,
-                        error: body.error && body.error.message
-                    });
-                })
-                .catch(e => {
-                    resolve({
-                        success: false,
-                        error: e.message
-                    });
-                });
-        })
+    register: async (username, email, password) => {
+        try {
+            const response = await axios.post('/users/register',
+                { username, email, password },
+                { headers: await getAuthHeader() });
+            return {
+                success: true,
+                data: response.data
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message, response: null
+            }
+        }
+    },
+    // getUsers: async ({ role }) => () =>
+    //     new Promise(async resolve => {
+    //         const header = await getAuthHeader();
+    //         request
+    //             .get(role ? `/users?role=${role}` : '/users', header.authorization)
+    //             .then(r => {
+    //                 const {
+    //                     body,
+    //                     error
+    //                 } = r;
+    //                 resolve(constructResolve(body, error));
+    //             })
+    //             .catch(e => {
+    //                 resolve({
+    //                     success: false,
+    //                     error: e.message
+    //                 });
+    //             });
+    //     }),
+    getUsers: ({ role }) => async () => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get(role ? `/users?role=${role}` : '/users', {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    getUser: async id => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get(`users/${id}`, {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    updateUser: async (username, email, id) => {
+        try {
+            const response = await axios.patch(`users/${id}`,
+                { username, email }, { headers: await getAuthHeader() });
+            return {
+                success: true,
+                response: { data: response.data },
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    },
+    deleteUser: async id => {
+        try {
+            await axios.delete(`users/${id}`, { headers: await getAuthHeader() });
+            return {
+                success: true
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    }
 };

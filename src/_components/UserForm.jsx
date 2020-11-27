@@ -2,7 +2,7 @@ import React from "react";
 import TextField from "./TextField";
 import Button from "./Button";
 import Toast from "./Toast";
-import UserServices from "../_services/UserServices";
+import { UserServices } from "../_services";
 
 import { Form, Container, Wrapper, Spinner } from '../_styled-components';
 import DeleteDialog from "./DeleteDialog";

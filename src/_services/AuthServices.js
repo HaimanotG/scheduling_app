@@ -1,107 +1,75 @@
-import request from "./index";
 import getAuthHeader from "../_helpers/authHeader";
+import axios from "./axios";
 
 export default {
-  login: (email, password) =>
-    new Promise(resolve => {
-      request
-        .post("/users/login", { email, password })
-        .then(r => {
-          const { error, body, response } = r;
-          if (error || body.error) {
-            let reason = { success: false };
-            if (!body.success && body.error) {
-              reason = { ...reason, error: body.error.message };
+    login: async (email, password) => {
+        try {
+            const response = await axios.post('/users/login', { email, password });
+            const { username, role } = response.data;
+            return {
+                success: true,
+                data: {
+                    sessionToken: response.headers.authorization,
+                    username,
+                    role
+                }
             }
-            resolve(reason);
-          }
-          resolve({
-            success: body.success || true,
-            data: {
-              sessionToken: response.headers.authorization,
-              username: body.username,
-              role: body.role
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message, response: null
             }
-          });
-        })
-        .catch(e => {
-          resolve({ success: false, error: e.message });
-        });
-    }),
-  loginMocked: (email, password) =>
-    new Promise(resolve => {
-      setInterval(() => {
-        resolve({
-          success: true,
-          data: {
-            sessionToken: "gibrishtoken",
-            username: "Haimanot Getu",
-            role: "admin"
-          }
-        });
-      }, 1000);
-    }),
-  loginMockedError: (email, password) =>
-    new Promise(resolve => {
-      setInterval(() => {
-        resolve({ success: false, error: "Something gone wrong!!" });
-      }, 500);
-    }),
-  checkSessionTokenMocked: () =>
-    new Promise(resolve => {
-      resolve({ success: true });
-    }),
-  checkSessionToken: () =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request.get("/users/checkSessionToken", header.authorization).then(r => {
-        const { error, body } = r;
-        if (error || body.error) {
-          let reason = { success: false };
-          if (!body.success && body.error) {
-            reason = { ...reason, error: body.error.message };
-          }
-          resolve(reason);
         }
-        resolve({ success: true });
-      });
-    }),
-  register: (username, email, password) =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .post(
-          "/users/register",
-          { username, email, password },
-          header.authorization
-        )
-        .then(r => {
-          const { body } = r;
-          resolve({
-            success: body.success || true,
-            body,
-            error: body.error && body.error.message
-          });
-        })
-        .catch(e => {
-          resolve({ success: false, error: e.message });
-        });
-    }),
-  deleteUser: userId =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .delete(`/users/${userId}`, header.authorization)
-        .then(r => {
-          const { body } = r;
-          resolve({
-            success: body.success || true,
-            body,
-            error: body.error && body.error.message
-          });
-        })
-        .catch(e => {
-          resolve({ success: false, error: e.message });
-        });
-    })
+    },
+    loginMocked: (email, password) =>
+        new Promise(resolve => {
+            setInterval(() => {
+                resolve({
+                    success: true,
+                    data: {
+                        sessionToken: "gibrishtoken",
+                        username: "Haimanot Getu",
+                        role: "admin"
+                    }
+                });
+            }, 1000);
+        }),
+    loginMockedError: (email, password) =>
+        new Promise(resolve => {
+            setInterval(() => {
+                resolve({ success: false, error: "Something went wrong!" });
+            }, 500);
+        }),
+    checkSessionTokenMocked: () =>
+        new Promise(resolve => {
+            resolve({ success: true });
+        }),
+    checkSessionToken: async () => {
+        try {
+            await axios.get('/users/checkSessionToken', { headers: await getAuthHeader() });
+            return {
+                success: true
+            }
+        } catch (e) {
+            return {
+                success: false
+            }
+        }
+    },
+    register: async (username, email, password) => {
+        try {
+            const response = await axios.post('/users/register', { username, email, password });
+            return {
+                success: true,
+                data: response.data
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message, response: null
+            }
+        }
+    }
 };

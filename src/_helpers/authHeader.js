@@ -1,7 +1,11 @@
 import localStore from "./localStore";
 
 export default async () => {
-  const user = await localStore.get("user");
-  const { sessionToken } = user;
-  return { authorization: `Bearer ${sessionToken}` };
+  try {
+    const user = await localStore.get("user");
+    const { sessionToken } = user;
+    return { authorization: `Bearer ${sessionToken}` };
+  } catch (e) {
+    return {};
+  }
 };

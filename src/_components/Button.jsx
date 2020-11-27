@@ -28,7 +28,8 @@ const BaseButton = styled.button`
         } else {
             return "var(--accent)";
         }
-    }};
+    }
+    };
 
   :hover {
     opacity: 0.7;

@@ -127,7 +127,6 @@ const Invisible = styled.div`
     z-index: 101;
 `;
 
-
 class Modal extends Component {
     state = {
         fadeType: "IN"

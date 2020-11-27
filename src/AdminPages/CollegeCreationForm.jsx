@@ -1,11 +1,11 @@
 import React from "react";
-
-import AdminServices from "../_services/AdminServices";
-import UserServices from "../_services/UserServices";
+import { connect } from "react-redux";
 import UserRole from "../_helpers/UserRole";
 
+import { AdminServices, UserServices } from "../_services";
 import { TextField, Button, SelectField, DeleteDialog, Toast } from '../_components'
 import { Form, Container, Wrapper, Spinner } from "../_styled-components";
+import { setAlert } from '../_actions/uiActions';
 
 const initialState = {
     name: "",
@@ -19,7 +19,6 @@ const initialState = {
 
 class CollegeCreationForm extends React.Component {
     state = initialState;
-    _isMounted = false;
 
     async _populateDefault() {
         let { success, data: { users }, error } = await UserServices.getUsers({
@@ -30,18 +29,18 @@ class CollegeCreationForm extends React.Component {
                 label: user.username,
                 value: user._id
             }));
-            this._isMounted && this.setState({
+            this.setState({
                 deans: [{ label: "--- Select ---", value: "" }, ...options],
                 loading: false
             });
         } else {
-            this._isMounted && this.setState({ loading: false, error, showErrorToast: true });
+            this.setState({ loading: false, error, showErrorToast: true });
         }
     }
 
     async componentDidMount() {
         this._isMounted = true;
-        this._isMounted && this.setState({ loading: true });
+        this.setState({ loading: true });
         await this._populateDefault();
 
         if (this.props.isEditing) {
@@ -56,15 +55,11 @@ class CollegeCreationForm extends React.Component {
                 Object.keys(initialState).forEach(key => {
                     defaultState[key] = college[key] || this.state[key];
                 });
-                this._isMounted && this.setState(defaultState);
+                this.setState(defaultState);
             } else {
-                this._isMounted && this.setState({ error, showErrorToast: true });
+                this.setState({ error, showErrorToast: true });
             }
         }
-    }
-
-    componentWillMount() {
-        this._isMounted = false;
     }
 
     toggleShowConfirmation = e => {
@@ -92,6 +87,7 @@ class CollegeCreationForm extends React.Component {
                 this.props.match.params.collegeId
             );
             if (success) {
+                this.props.onSetAlert({ message: "1 college updated!", type: "info" });
                 this.props.history.push("/admin/college");
             } else {
                 this.setState({ error, showErrorToast: true });
@@ -99,6 +95,7 @@ class CollegeCreationForm extends React.Component {
         } else {
             const { success, error } = await AdminServices.addCollege(name, dean);
             if (success) {
+                this.props.onSetAlert({ message: "1 college added!", type: "success" });
                 this.props.history.push("/admin/college");
             } else {
                 this.setState({ error, showErrorToast: true });
@@ -112,12 +109,14 @@ class CollegeCreationForm extends React.Component {
         );
         if (success) {
             this.props.history.push("/admin/college");
+            this.props.onSetAlert({ message: "1 college deleted!", type: "warning" });
         } else {
             this.setState({ error });
         }
     };
 
     isFormValid = state => state.dean !== "" && state.name.length >= 3;
+
     closeToast = () => this.setState({
         showErrorToast: false
     });
@@ -174,4 +173,7 @@ class CollegeCreationForm extends React.Component {
     }
 }
 
-export default CollegeCreationForm;
+const mapDispatchToProps = dispatch => ({
+    onSetAlert: ({ message, type }) => dispatch(setAlert({ message, type }))
+})
+export default connect(null, mapDispatchToProps)(CollegeCreationForm);

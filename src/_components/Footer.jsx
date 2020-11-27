@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Container from "../_styled-components/Container";
 
-const FooterWrapper = styled.div`
+const FooterWrapper = styled.footer`
     padding: 20px;
     background: var(--colorPrimaryDark);
 `;

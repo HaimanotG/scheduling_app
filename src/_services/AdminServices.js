@@ -1,177 +1,154 @@
-import request from "./index";
 import getAuthHeader from "../_helpers/authHeader";
-import constructResolve from "./constructResolve";
 import colleges from "./mocks/admin/colleges";
+import axios from "./axios";
 
 export default {
-  getColleges: () =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .get("/admin/colleges", header.authorization)
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  getCollege: id =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .get(`/admin/colleges/${id}`, header.authorization)
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  getCollegesMocked: () =>
-    new Promise(resolve => {
-      resolve({
-        data: {
-          colleges
-        },
-        success: true
-      });
-    }),
-  addCollege: (name, dean) =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      // const response = await axios.post('http://localhost:5000/api/v1/admin/colleges', {name,dean}, {headers: await getAuthHeader()});
-      // console.log(response);
-      //       return ;
-      request
-        .post(
-          "/admin/colleges",
-          {
-            name,
-            dean
-          },
-          header.authorization
-        )
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  updateCollege: (name, dean, id) =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .patch(`/admin/colleges/${id}`, { name, dean }, header.authorization)
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  deleteCollege: collegeId =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .delete(`/admin/colleges/${collegeId}`, header.authorization)
-        .then(r => {
-          const { body } = r;
-          resolve({
-            success: body.success || true,
-            body,
-            error: body.error && body.error.message
-          });
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  addCollegeMocked: () =>
-    new Promise(resolve => {
-      resolve({
-        success: true,
-        data: undefined,
-        error: ""
-      });
-    }),
-  getDeans: () =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .get("/users", header.authorization)
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error, "deans"));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  getDean: id =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .get(`/users/${id}`, header.authorization)
-        .then(r => {
-          const { body, error } = r;
-          resolve(constructResolve(body, error, "dean"));
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    }),
-  updateDean: (username, email, deanId) =>
-    new Promise(async resolve => {
-      const header = await getAuthHeader();
-      request
-        .patch(
-          `/users/${deanId}`,
-          {
-            username,
-            email
-          },
-          header.authorization
-        )
-        .then(r => {
-          const { body } = r;
-          resolve({
-            success: body.success || true,
-            body,
-            error: body.error && body.error.message
-          });
-        })
-        .catch(e => {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        });
-    })
+    getColleges: async () => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get("/admin/colleges", {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    getCollege: async id => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get(`/admin/colleges/${id}`, {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    getCollegesMocked: () =>
+        new Promise(resolve => {
+            resolve({
+                data: {
+                    colleges
+                },
+                success: true
+            });
+        }),
+    addCollege: async (name, dean) => {
+        try {
+            const response = await axios.post('/admin/colleges',
+                { name, dean },
+                { headers: await getAuthHeader() });
+            return {
+                success: true,
+                response: { data: response.data },
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    },
+    updateCollege: async (name, dean, id) => {
+        try {
+            const response = await axios.patch(`admin/colleges/${id}`,
+                { name, dean }, { headers: await getAuthHeader() });
+            return {
+                success: true,
+                response: { data: response.data },
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    },
+    deleteCollege: async id => {
+        try {
+            await axios.delete(`/admin/colleges/${id}`, { headers: await getAuthHeader() });
+            return {
+                success: true
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    },
+    addCollegeMocked: () =>
+        new Promise(resolve => {
+            resolve({
+                success: true,
+                data: undefined,
+                error: ""
+            });
+        }),
+    getDeans: async () => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get("/users", {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    getDean: async id => {
+        try {
+            const authHeader = await getAuthHeader();
+            const response = await axios.get(`users/${id}`, {
+                headers: authHeader
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+    updateDean: async (username, email, id) => {
+        try {
+            const response = await axios.patch(`users/${id}`,
+                { username, email }, { headers: await getAuthHeader() });
+            return {
+                success: true,
+                response: { data: response.data },
+            }
+        } catch (e) {
+            const { success, error } = e.response.data;
+            const { message } = error;
+            return {
+                success, error: message
+            }
+        }
+    }
 };
