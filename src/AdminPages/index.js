@@ -1,11 +1,13 @@
-import Admin from './Admin.jsx';
-import CollegeList from './CollegeList.jsx';
-import DeanList from './DeanList.jsx';
-import CollegeCreationForm from './CollegeCreationForm.jsx';
+import Admin from './Admin';
+import DepartmentForm from './DepartmentForm';
+import DepartmentList from './DepartmentList';
+import HeadList from './HeadList';
+import HeadForm from './HeadForm';
 
 export {
     Admin,
-    CollegeList,
-    DeanList,
-    CollegeCreationForm
+    DepartmentForm,
+    DepartmentList,
+    HeadList,
+    HeadForm
 }

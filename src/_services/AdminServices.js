@@ -20,10 +20,10 @@ export default {
             };
         }
     },
-    getCollege: async id => {
+    getDepartment: async id => {
         try {
             const authHeader = await getAuthHeader();
-            const response = await axios.get(`/admin/colleges/${id}`, {
+            const response = await axios.get(`/admin/departments/${id}`, {
                 headers: authHeader
             });
             return {
@@ -46,10 +46,10 @@ export default {
                 success: true
             });
         }),
-    addCollege: async (name, dean) => {
+    addDepartment: async (name, head) => {
         try {
-            const response = await axios.post('/admin/colleges',
-                { name, dean },
+            const response = await axios.post('/admin/department',
+                { name, head },
                 { headers: await getAuthHeader() });
             return {
                 success: true,
@@ -141,7 +141,7 @@ export default {
                 { username, email }, { headers: await getAuthHeader() });
             return {
                 success: true,
-                response: { data: response.data },
+                data: response.data,
             }
         } catch (e) {
             const { success, error } = e.response.data;

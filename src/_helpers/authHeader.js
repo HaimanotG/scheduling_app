@@ -1,11 +1,12 @@
 import localStore from "./localStore";
 
 export default async () => {
-  try {
     const user = await localStore.get("user");
-    const { sessionToken } = user;
-    return { authorization: `Bearer ${sessionToken}` };
-  } catch (e) {
-    return {};
-  }
+    if (user && user.sessionToken) {
+        return {
+            "x-auth-token": `${user.sessionToken}`
+        };
+    } else {
+        return {};
+    }
 };

@@ -75,15 +75,15 @@ const Admin = () => {
                 </AdminHeader>
                 <ActionBar>
                     <ActionGroup>
-                        <Anchor to={'/admin/dean'}>Dean</Anchor>
+                        <Anchor to={'/admin/head'}>Head</Anchor>
                         <Actions>
-                            <Anchor to={'/admin/dean/add'}>Add +</Anchor>
+                            <Anchor to={'/admin/head/add'}>Add</Anchor>
                         </Actions>
                     </ActionGroup>
                     <ActionGroup>
-                        <Anchor to={'/admin/college'}>College</Anchor>
+                        <Anchor to={'/admin/department'}>Department</Anchor>
                         <Actions>
-                            <Anchor to={'/admin/college/add'}>Add + </Anchor>
+                            <Anchor to={'/admin/department/add'}>Add</Anchor>
                         </Actions>
                     </ActionGroup>
                 </ActionBar>

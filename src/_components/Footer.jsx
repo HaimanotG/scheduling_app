@@ -16,7 +16,7 @@ const Footer = () => {
     return (
         <FooterWrapper>
             <Container>
-                <FooterText>&copy; All Rights Reserved, 2020</FooterText>
+                <FooterText>&copy; All Rights Reserved, 2021</FooterText>
             </Container>
         </FooterWrapper>
     )

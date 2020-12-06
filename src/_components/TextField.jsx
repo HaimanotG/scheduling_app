@@ -14,7 +14,7 @@ const Input = styled.input`
     background: var(--component-background);
     
     :focus {
-        border: .8px solid #555;
+        border: .8px solid var(--accent);
     }
 `;
 

@@ -14,7 +14,7 @@ const StyledSelect = styled.select`
   position: relative;
 
   :focus {
-    border: 0.8px solid #555;
+    border: 0.8px solid var(--accent);
   }
 `;
 

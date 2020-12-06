@@ -1,6 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from "styled-components";
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { changeTheme } from '../_actions/uiActions';
+import { logout } from '../_actions/authActions';
 import Container from "../_styled-components/Container";
 
 const growIn = keyframes`
@@ -56,7 +59,7 @@ const Action = styled(Link)`
 
 const LetterAvatar = styled.button`
     border: none; font-weight: bold; color: #fff; cursor: pointer;
-    height: 40px; width: 40px; margin: 5px;
+    height: 40px; width: 40px; margin: 5px 0 5px 5px;
     border-radius: 50%; background: var(--accent);
 
     display: flex;
@@ -132,13 +135,14 @@ const SubMenuLink = styled(Link)`
     }
 `;
 
-const Header = ({ isLoggedIn, onLogout, username = "", toggleTheme, theme }) => {
+const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme }) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
     const handleToggleTheme = e => {
         e.preventDefault();
         toggleMenu();
-        toggleTheme()
+        changeTheme();
     };
 
     const _buildProfileSubMenu = isMenuOpen => (
@@ -153,7 +157,7 @@ const Header = ({ isLoggedIn, onLogout, username = "", toggleTheme, theme }) => 
                     <SubMenuLink to='/logout' onClick={e => {
                         e.preventDefault();
                         toggleMenu();
-                        onLogout(e);
+                        logout();
                     }}>
                         Log out</SubMenuLink>
                 </SubMenuListItem>
@@ -182,4 +186,14 @@ const Header = ({ isLoggedIn, onLogout, username = "", toggleTheme, theme }) => 
         </StyledHeader>
     )
 };
-export default Header;
+
+const mapStateToProps = state => ({
+    theme: state.ui.theme
+})
+
+const mapDispatchToProps = dispatch => ({
+    changeTheme: () => dispatch(changeTheme()),
+    logout: () => dispatch(logout()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

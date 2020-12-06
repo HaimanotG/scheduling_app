@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
+    "history": "^4.10.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -12,14 +13,17 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "request": "latest",
     "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "backend-install": "npm install --prefix backend",
+    "backend": "npm start --prefix backend",
+    "dev-backend": "npm run server --prefix backend",
+    "dev": "concurrently \"npm run dev-backend\" \"npm start\""
   },
   "eslintConfig": {
     "extends": "react-app"

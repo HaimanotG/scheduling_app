@@ -19,25 +19,6 @@ export default {
             }
         }
     },
-    // getUsers: async ({ role }) => () =>
-    //     new Promise(async resolve => {
-    //         const header = await getAuthHeader();
-    //         request
-    //             .get(role ? `/users?role=${role}` : '/users', header.authorization)
-    //             .then(r => {
-    //                 const {
-    //                     body,
-    //                     error
-    //                 } = r;
-    //                 resolve(constructResolve(body, error));
-    //             })
-    //             .catch(e => {
-    //                 resolve({
-    //                     success: false,
-    //                     error: e.message
-    //                 });
-    //             });
-    //     }),
     getUsers: ({ role }) => async () => {
         try {
             const authHeader = await getAuthHeader();

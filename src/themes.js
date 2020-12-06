@@ -1,16 +1,16 @@
 const baseTheme = {
-  colorPrimary: "rgb(39,105,162)",
-  colorPrimaryDark: "rgb(36,100,150)",
+  // colorPrimary: "rgb(39,105,162)",
+  // colorPrimaryDark: "rgb(36,100,150)",
   // colorPrimary: 'rgb(47, 69, 117)',
   // colorPrimaryDark: 'rgb(46, 68, 127)',
   // colorPrimary: '#607d8b',
   // colorPrimaryDark: '#455a64',
   // colorPrimary: 'rgb(44, 62, 80)',
   // colorPrimaryDark: 'rgb(43, 61, 80)',
-  // colorPrimary: 'rgb(24, 188, 156)',
-  // colorPrimaryDark: 'rgb(20, 170, 150)',
-  // colorPrimary: '#009688',
-  // colorPrimaryDark: '#00796b',
+  colorPrimary: 'rgb(24, 188, 156)',
+  colorPrimaryDark: 'rgb(20, 170, 150)',
+  // colorPrimary: '#f2f2f2',
+  // colorPrimaryDark: '#f1f1f1',
   accent: "rgb(24, 188, 156)",
   warning: "rgb(255,10,20)",
   success: "#4dbd74",
@@ -30,8 +30,8 @@ export const lightTheme = {
 
 export const darkTheme = {
   ...baseTheme,
-  body: "rgb(14, 20, 27)",
+  body: "rgb(0,0,0)",
   text: "#FAFAFA",
-  componentBackground: "rgb(51,51,51)",
-  componentBoxShadow: "1px 1px 1px 0 rgba(255,255,255,.25)"
+  componentBackground: "rgb(14, 20, 27)",
+  componentBoxShadow: "0px 0px 0px 2px rgba(255,255,255,.1)"
 };

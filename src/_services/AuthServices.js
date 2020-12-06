@@ -2,16 +2,15 @@ import getAuthHeader from "../_helpers/authHeader";
 import axios from "./axios";
 
 export default {
-    login: async (email, password) => {
+    login: async ({ username, password }) => {
         try {
-            const response = await axios.post('/users/login', { email, password });
-            const { username, role } = response.data;
+            const response = await axios.post('/users/login', { username, password });
             return {
                 success: true,
                 data: {
-                    sessionToken: response.headers.authorization,
-                    username,
-                    role
+                    sessionToken: response.headers['x-auth-token'],
+                    username: response.data.username,
+                    role: response.data.role
                 }
             }
         } catch (e) {
@@ -64,6 +63,7 @@ export default {
                 success: true,
                 data: response.data
             }
+
         } catch (e) {
             const { success, error } = e.response.data;
             const { message } = error;

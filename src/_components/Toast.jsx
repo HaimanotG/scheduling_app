@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { clearMessage } from '../_actions/uiActions';
 
 const fadeEnter = keyframes`
     0% {
@@ -40,7 +42,19 @@ const ToastWrapper = styled.div`
 
     padding: 1em;
     border-radius: var(--default-radi);
-    background: ${({ color }) => color ? color : 'var(--warning)'};
+    background: ${({ state }) => {
+        switch (state) {
+            case "success":
+                return "var(--success)";
+            case "warning":
+                return "var(--warning)";
+            case "info":
+                return "var(--info)"
+            default:
+                return "var(--accent)";
+        }
+    }
+    };
     
     animation-name: ${({ fadeType }) => fadeType === "IN" ? fadeEnter : fadeExit};
     animation-duration: 500ms;
@@ -75,7 +89,7 @@ class Toast extends Component {
         this.setState({ fadeType: "OUT" })
         setTimeout(() => {
             this.setState({ isOpen: false });
-            this.props.onClose && this.props.onClose();
+            this.props.close && this.props.close();
         }, 490);
     }
 
@@ -91,11 +105,10 @@ class Toast extends Component {
     }
 
     render() {
-        const { label, color } = this.props;
-
+        const { message: { text, type } } = this.props;
         return (
-            <ToastWrapper fadeType={this.state.fadeType} isOpen={this.state.isOpen} color={color}>
-                <ToastText>{label}</ToastText>
+            <ToastWrapper fadeType={this.state.fadeType} isOpen={this.state.isOpen} state={type}>
+                <ToastText>{text}</ToastText>
                 <CloseButton onClick={this.onClose}>&times;</CloseButton>
             </ToastWrapper>
         );
@@ -103,8 +116,21 @@ class Toast extends Component {
 }
 
 Toast.propTypes = {
-    label: PropTypes.string.isRequired,
+    message: PropTypes.object.isRequired,
     duration: PropTypes.number,
+    close: PropTypes.func.isRequired
 }
 
-export default Toast;
+Toast.defaultProps = {
+    duration: 5000,
+}
+
+const mapStateToProps = state => ({
+    message: state.ui.message,
+})
+
+const mapDispatchToProps = dispatch => ({
+    close: () => dispatch(clearMessage()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toast);
