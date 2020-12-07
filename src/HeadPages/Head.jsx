@@ -86,6 +86,12 @@ const Head = () => {
                             <Anchor to={'/head/room/add'}>Add</Anchor>
                         </Actions>
                     </ActionGroup>
+                    <ActionGroup>
+                        <Anchor to={'/head/batch'}>Batch</Anchor>
+                        <Actions>
+                            <Anchor to={'/head/batch/add'}>Add</Anchor>
+                        </Actions>
+                    </ActionGroup>
                 </ActionBar>
             </Wrapper>
         </Container>

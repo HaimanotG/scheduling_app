@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from "./themes";
 import { Home, NotFound, Login } from "./PublicPages";
 import { Header, Footer, Breadcrumbs, ToastPortal } from './_components';
 import { Admin, HeadList, DepartmentForm, DepartmentList, HeadForm } from "./AdminPages";
-import { Head, TeacherList, TeacherForm, RoomList, RoomForm } from "./HeadPages";
+import { Head, TeacherList, TeacherForm, RoomList, RoomForm, BatchList, BatchForm } from "./HeadPages";
 
 import { UserRole } from './_helpers';
 import { loadTheme, clearMessage } from './_actions/uiActions';
@@ -31,9 +31,9 @@ class App extends Component {
     componentDidMount() {
         this.props.loadTheme();
         this.props.checkSession();
-        this.props.history.listen((location)=>{
-            this.props.clearMessage();
-        })
+        // this.props.history.listen((location)=>{
+        //     this.props.clearMessage();
+        // })
     }
 
     privateRoutes = [
@@ -51,6 +51,10 @@ class App extends Component {
         { path: "/head/room", component: RoomList, role: UserRole.HEAD },
         { path: "/head/room/add", component: RoomForm, role: UserRole.HEAD },
         { path: "/head/room/:roomId/edit", component: RoomForm, isEditing: true, role: UserRole.HEAD },
+        { path: "/head/batch", component: BatchList, role: UserRole.HEAD },
+        { path: "/head/batch/add", component: BatchForm, role: UserRole.HEAD },
+        { path: "/head/batch/:batchId/edit", component: BatchForm, isEditing: true, role: UserRole.HEAD },
+        
     ];
 
     render() {
@@ -82,7 +86,7 @@ class App extends Component {
                             <Route
                                 path="/login"
                                 component={() =>
-                                    isLoggedIn ? <Redirect to={`/${userRole}/room/`} /> : <Login />
+                                    isLoggedIn ? <Redirect to={`/${userRole}/batch/`} /> : <Login />
                                 }
                             />
                             <Route component={NotFound} />

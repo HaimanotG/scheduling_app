@@ -22,7 +22,7 @@ export const addRoom = ({ name, isLab }) => ({
     method: "post",
     body: { name, isLab },
     next: ADD_ROOM,
-    successMessage: "1 Room  Added",
+    successMessage: "1 Room Added",
     failureMessage: "Failed Adding Room ",
     onSuccessRedirect: "/head/room"
   }
@@ -35,7 +35,7 @@ export const updateRoom = ({ name, isLab, id }) => ({
     method: "patch",
     body: { name, isLab },
     next: UPDATE_ROOM,
-    successMessage: "1 Room  Updated",
+    successMessage: "1 Room Updated",
     failureMessage: "Failed Updating Room ",
     onSuccessRedirect: "/head/room"
   }
@@ -47,7 +47,7 @@ export const deleteRoom = id => ({
     url: `/department/rooms/${id}`,
     method: "delete",
     next: DELETE_ROOM,
-    successMessage: "1 Room  Deleted",
+    successMessage: "1 Room Deleted",
     failureMessage: "Failed Deleting Room ",
     onSuccessRedirect: "/head/room"
   }

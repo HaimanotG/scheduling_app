@@ -27,6 +27,11 @@ export const ADD_ROOM = asyncActionType("ADD_ROOM");
 export const UPDATE_ROOM = asyncActionType("UPDATE_ROOM");
 export const DELETE_ROOM = asyncActionType("DELETE_ROOM");
 
+export const FETCH_BATCHES = asyncActionType("FETCH_BATCHES");
+export const ADD_BATCH = asyncActionType("ADD_BATCH");
+export const UPDATE_BATCH = asyncActionType("UPDATE_BATCH");
+export const DELETE_BATCH = asyncActionType("DELETE_BATCH");
+
 export const API = "API";
 export const LOGOUT = "LOGOUT";
 

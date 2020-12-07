@@ -4,6 +4,7 @@ import auth from './authReducer';
 import admin from './adminReducer';
 import teacher from './teacherReducer';
 import room from './roomReducer';
+import batch from './batchReducer';
 
 export default combineReducers({
     ui,
@@ -11,4 +12,5 @@ export default combineReducers({
     admin,
     teacher,
     room,
+    batch
 })
