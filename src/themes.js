@@ -1,20 +1,20 @@
 const baseTheme = {
-  // colorPrimary: "rgb(39,105,162)",
-  // colorPrimaryDark: "rgb(36,100,150)",
+  colorPrimary: "rgb(39,105,162)",
+  colorPrimaryDark: "rgb(36,100,150)",
   // colorPrimary: 'rgb(47, 69, 117)',
   // colorPrimaryDark: 'rgb(46, 68, 127)',
   // colorPrimary: '#607d8b',
   // colorPrimaryDark: '#455a64',
   // colorPrimary: 'rgb(44, 62, 80)',
   // colorPrimaryDark: 'rgb(43, 61, 80)',
-  colorPrimary: 'rgb(24, 188, 156)',
-  colorPrimaryDark: 'rgb(20, 170, 150)',
+  // colorPrimary: 'rgb(24, 188, 156)',
+  // colorPrimaryDark: 'rgb(20, 170, 150)',
   // colorPrimary: '#f2f2f2',
   // colorPrimaryDark: '#f1f1f1',
   accent: "rgb(24, 188, 156)",
   warning: "rgb(255,10,20)",
   success: "#4dbd74",
-  info: "rgb(46,103,255)",
+  info: "#2196F3",
   defaultRadi: "3px"
 };
 

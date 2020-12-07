@@ -15,6 +15,23 @@ const GlobalStyles = createGlobalStyle`
         --default-box-shadow: ${({ theme }) => theme.componentBoxShadow};
         --default-radi: ${({ theme }) => theme.defaultRadi};
         --font-stack: 'Roboto Regular', Helvetica, Arial, sans-serif;
+
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--info); 
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            opacity: .7;
+            background: var(--info); 
+        }
     }
     
     @font-face {

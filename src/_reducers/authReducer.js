@@ -22,8 +22,8 @@ export default (state = initialState, action) => {
             const user = localStore.get("user");
             if (user.role === 'admin' && state.isLoading) {
                 history.push("/admin")
-            } else {
-                history.push("/head");
+            } else if (user.role === 'head' && state.isLoading) {
+                history.push("/head/room/add");
             };
             return { ...state, isLoading: false, user };
         case CHECK_USER.FAILURE:

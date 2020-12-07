@@ -8,6 +8,7 @@ export const LOGIN = asyncActionType('LOGIN');
 export const CHECK_USER = asyncActionType('CHECK_USER');
 export const FETCH_DEPARTMENTS = asyncActionType("FETCH_DEPARTMENTS");
 export const FETCH_HEADS = asyncActionType("FETCH_HEADS");
+
 export const ADD_DEPARTMENT = asyncActionType("ADD_DEPARTMENT");
 export const UPDATE_DEPARTMENT = asyncActionType("UPDATE_DEPARTMENT");
 export const DELETE_DEPARTMENT = asyncActionType("DELETE_DEPARTMENT");
@@ -15,6 +16,16 @@ export const DELETE_DEPARTMENT = asyncActionType("DELETE_DEPARTMENT");
 export const ADD_HEAD = asyncActionType('ADD_HEAD');
 export const UPDATE_HEAD = asyncActionType('UPDATE_HEAD');
 export const DELETE_HEAD = asyncActionType('DELETE_HEAD');
+
+export const FETCH_TEACHERS = asyncActionType("FETCH_TEACHERS");
+export const ADD_TEACHER = asyncActionType("ADD_TEACHER");
+export const UPDATE_TEACHER = asyncActionType("UPDATE_TEACHER");
+export const DELETE_TEACHER = asyncActionType("DELETE_TEACHER");
+
+export const FETCH_ROOMS = asyncActionType("FETCH_ROOMS");
+export const ADD_ROOM = asyncActionType("ADD_ROOM");
+export const UPDATE_ROOM = asyncActionType("UPDATE_ROOM");
+export const DELETE_ROOM = asyncActionType("DELETE_ROOM");
 
 export const API = "API";
 export const LOGOUT = "LOGOUT";

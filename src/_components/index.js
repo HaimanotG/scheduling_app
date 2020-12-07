@@ -9,6 +9,7 @@ import TextField from './TextField';
 import SelectField from './SelectField';
 import Toast from "./Toast";
 import ToastPortal from './ToastPortal';
+import CheckBox from './CheckBox';
 
 export {
     Footer,
@@ -21,5 +22,6 @@ export {
     TextField,
     SelectField,
     Toast,
-    ToastPortal
+    ToastPortal,
+    CheckBox
 }

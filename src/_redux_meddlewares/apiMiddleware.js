@@ -1,6 +1,6 @@
 import { API } from "../_constants/action-types";
 import { authHeader, history } from '../_helpers';
-import axios from '../_services/axios';
+import axiosInstance from '../_services/axios';
 import { setMessage } from '../_actions/uiActions';
 
 export default ({ getState, dispatch }) => next => async action => {
@@ -16,10 +16,10 @@ export default ({ getState, dispatch }) => next => async action => {
         const { method, url, body } = action.payload;
         switch (method) {
             case "get":
-                response = await axios.get(url, { headers: await authHeader() });
+                response = await axiosInstance.get(url, { headers: await authHeader() });
                 break;
             case "post":
-                response = await axios.post(url, body, { headers: await authHeader() });
+                response = await axiosInstance.post(url, body, { headers: await authHeader() });
                 if (url.includes("login")) {
                     response = {
                         data: {
@@ -31,10 +31,10 @@ export default ({ getState, dispatch }) => next => async action => {
                 }
                 break;
             case "patch":
-                response = await axios.patch(url, body, { headers: await authHeader() });
+                response = await axiosInstance.patch(url, body, { headers: await authHeader() });
                 break;
             case "delete":
-                response = await axios.delete(url, { headers: await authHeader() });
+                response = await axiosInstance.delete(url, { headers: await authHeader() });
                 break;
             default:
                 break;
@@ -42,7 +42,7 @@ export default ({ getState, dispatch }) => next => async action => {
 
         if (response.data) {
             dispatch({ type: SUCCESS, payload: response.data });
-            
+
             if (action.payload.successMessage) {
                 dispatch(setMessage({ text: action.payload.successMessage, type: "success" }));
             }
@@ -58,13 +58,13 @@ export default ({ getState, dispatch }) => next => async action => {
         }
 
     } catch (e) {
-        const message = (e.response && e.response.data && e.response.data.message)
-            || e.message || e.toString();
-
+        const { error } = e.response.data;
+        const { message } = error;
+        
         dispatch({ type: FAILURE, payload: { error: message } });
 
         if (action.payload.failureMessage) {
-            dispatch(setMessage({ text: action.payload.failureMessage, type: "warning" }));
+            dispatch(setMessage({ text: message || action.payload.failureMessage, type: "warning" }));
         }
     }
 };

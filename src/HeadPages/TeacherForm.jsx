@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SelectField, TextField, Button, DeleteDialog } from '../_components';
+import { TextField, Button, DeleteDialog } from '../_components';
 import { Container, Wrapper, Form, Spinner } from '../_styled-components';
-import { AdminServices } from "../_services";
 
 import {
-    fetchHeads,
-    addDepartment,
-    deleteDepartment,
-    updateDepartment
-} from '../_actions/adminActions';
+    addTeacher,
+    deleteTeacher,
+    updateTeacher
+} from '../_actions/teacherActions';
+
+import GenericServices from '../_services/GenericServices';
 
 const initialState = {
     name: "",
-    head: "",
     showDeleteConfirmation: false,
 };
 
-class DepartmentForm extends Component {
+class TeacherForm extends Component {
     state = initialState;
 
     async componentDidMount() {
-        this.props.loadHeads();
         if (this.props.isEditing) {
-            let {
-                success,
-                data
-            } = await AdminServices.getDepartment(this.props.match.params.departmentId);
-            if (success && data !== null) {
+            const teacherId = this.props.match.params.teacherId;
+            let { data } = await GenericServices.get(`/department/teachers/${teacherId}`);
+            if (data) {
                 let defaultState = {};
                 Object.keys(initialState).forEach(key => {
                     defaultState[key] = data[key] || this.state[key];
@@ -37,23 +33,17 @@ class DepartmentForm extends Component {
         }
     }
 
-    getHeadsOptions = heads => [{ label: "--- Select ---", value: "" },
-    ...heads.map(head => ({
-        label: head.username,
-        value: head._id
-    }))]
-
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
 
     handleSubmit = async e => {
         e.preventDefault();
-        const { head, name } = this.state;
+        const { name } = this.state;
         if (this.props.isEditing) {
-            this.props.updateDepartment({ name, head, id: this.props.match.params.departmentId })
+            this.props.updateTeacher({ name, id: this.props.match.params.teacherId })
         } else {
-            this.props.addDepartment({ name, head });
+            this.props.addTeacher({ name });
         }
     };
 
@@ -66,7 +56,7 @@ class DepartmentForm extends Component {
     handleDelete = e => {
         e.preventDefault();
         this.toggleShowConfirmation();
-        this.props.deleteDepartment(this.props.match.params.departmentId)
+        this.props.deleteTeacher(this.props.match.params.teacherId)
     }
 
     render() {
@@ -83,17 +73,19 @@ class DepartmentForm extends Component {
                             value={this.state.name}
                             onChange={this.handleChange}
                         />
-                        <SelectField
-                            value={this.state.head}
-                            options={this.getHeadsOptions(this.props.heads)}
-                            onChange={this.handleChange}
-                            name={"head"}
-                        />
                         <Button
                             label={this.props.isEditing ? "Update" : "Save"}
                             type="submit" accent
                             disabled={!enabled}
                         />
+                        {
+                            !this.props.isEditing && <Button
+                                label={"Save and Continue Adding"}
+                                accent
+                                disabled={!enabled}
+                            />
+                        }
+
                         {this.props.isEditing && (
                             <Button
                                 label={"Delete"}
@@ -108,7 +100,7 @@ class DepartmentForm extends Component {
                         onYes={this.handleDelete}
                         onClose={this.toggleShowConfirmation}
                         label={`Are you sure you want to delete 
-                        ${this.state.name ? this.state.name : "this"} department?`}
+                        ${this.state.name ? this.state.name : "this Teacher"} `}
                         headerText="Confirm Delete"
                     />
                 )}
@@ -118,15 +110,13 @@ class DepartmentForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    heads: state.admin.heads,
-    loading: state.admin.loading,
+    loading: state.teacher.loading,
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadHeads: () => dispatch(fetchHeads()),
-    addDepartment: ({ name, head }) => dispatch(addDepartment({ name, head })),
-    updateDepartment: ({ name, head, id }) => dispatch(updateDepartment({ name, head, id })),
-    deleteDepartment: id => dispatch(deleteDepartment(id)),
+    addTeacher: ({ name }) => dispatch(addTeacher({ name })),
+    updateTeacher: ({ name, id }) => dispatch(updateTeacher({ name, id })),
+    deleteTeacher: id => dispatch(deleteTeacher(id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepartmentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherForm);
