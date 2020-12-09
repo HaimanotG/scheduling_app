@@ -24,7 +24,7 @@ class BatchForm extends Component {
     state = initialState;
 
     async componentDidMount() {
-        this.props.loadRooms();
+        this.props.fetchRooms();
         if (this.props.isEditing) {
             const batchId = this.props.match.params.batchId;
             let { data } = await GenericServices.get(`/department/batches/${batchId}`);
@@ -139,11 +139,9 @@ const mapStateToProps = state => ({
     rooms: state.room.rooms,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadRooms: () => dispatch(fetchRooms()),
-    addBatch: ({ name, classRoom, labRoom }) => dispatch(addBatch({ name, classRoom, labRoom })),
-    updateBatch: ({ name, classRoom, labRoom, id }) => dispatch(updateBatch({ name, classRoom, labRoom, id })),
-    deleteBatch: id => dispatch(deleteBatch(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(BatchForm);
+export default connect(mapStateToProps, {
+    fetchRooms,
+    addBatch,
+    updateBatch,
+    deleteBatch,
+})(BatchForm);

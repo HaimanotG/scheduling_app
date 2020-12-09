@@ -4,20 +4,23 @@ import {
     CLEAR_MESSAGE,
     LOAD_THEME_MODE,
     LOAD_PRIMARY_THEME,
-    CHANGE_PRIMARY_THEME
+    CHANGE_PRIMARY_THEME,
+    REDIRECT,
+    CLEAR_REDIRECT
 } from "../_constants/action-types";
 
 const initialState = {
     message: {},
     themeMode: "light",
-    primaryTheme: ""
+    primaryTheme: "",
+    redirectTo: undefined,
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_MESSAGE:
             return { ...state, message: action.payload };
-            
+
         case CLEAR_MESSAGE:
             return { ...state, message: {} }
 
@@ -37,6 +40,11 @@ export default (state = initialState, action) => {
         case CHANGE_PRIMARY_THEME:
             window.localStorage.setItem("primaryTheme", action.payload);
             return { ...state, primaryTheme: action.payload }
+
+        case REDIRECT:
+            return { ...state, redirectTo: action.payload }
+        case CLEAR_REDIRECT:
+            return { ...state, redirectTo: undefined };
 
         default:
             return state;

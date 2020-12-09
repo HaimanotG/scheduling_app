@@ -4,7 +4,9 @@ import {
     LOAD_THEME_MODE,
     CHANGE_THEME_MODE,
     LOAD_PRIMARY_THEME,
-    CHANGE_PRIMARY_THEME
+    CHANGE_PRIMARY_THEME,
+    REDIRECT,
+    CLEAR_REDIRECT
 } from "../_constants/action-types";
 
 export const setMessage = ({ text, type }) => ({
@@ -32,4 +34,13 @@ export const changePrimaryTheme = theme => ({
 
 export const loadPrimaryTheme = () => ({
     type: LOAD_PRIMARY_THEME
+})
+
+export const redirect = path => ({
+    type: REDIRECT,
+    payload: path
+})
+
+export const clearRedirect = () => ({
+    type: CLEAR_REDIRECT,
 })

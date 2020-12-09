@@ -21,7 +21,7 @@ class DepartmentForm extends Component {
     state = initialState;
 
     async componentDidMount() {
-        this.props.loadHeads();
+        this.props.fetchHeads();
         if (this.props.isEditing) {
             let {
                 success,
@@ -122,11 +122,9 @@ const mapStateToProps = state => ({
     loading: state.admin.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadHeads: () => dispatch(fetchHeads()),
-    addDepartment: ({ name, head }) => dispatch(addDepartment({ name, head })),
-    updateDepartment: ({ name, head, id }) => dispatch(updateDepartment({ name, head, id })),
-    deleteDepartment: id => dispatch(deleteDepartment(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DepartmentForm);
+export default connect(mapStateToProps, {
+    fetchHeads,
+    addDepartment,
+    updateDepartment,
+    deleteDepartment,
+})(DepartmentForm);

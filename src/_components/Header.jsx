@@ -41,10 +41,14 @@ const Actions = styled.div`
     }
 `;
 
-const HeaderText = styled.h2`
+const HeaderText = styled(Link)`
+    text-decoration: none;
     color: #fff;
     letter-spacing: 1.12px; 
-    font-size: 1.5em; align-self: center;
+    font-size: 1.7em;
+    font-weight: bold;
+    align-self: center;
+
     span {
         color: #eee;
     }
@@ -66,6 +70,7 @@ const LetterAvatar = styled.button`
     align-items: center;
     justify-content: center;
 `;
+
 const Profile = styled.div`
     position: relative;
     display: flex;
@@ -83,7 +88,7 @@ const Profile = styled.div`
 
 const ProfileSubMenu = styled.div`
     position: absolute;
-    width: 125px;
+    width: 175px;
     top: 100%;
     right: 0%;
     background: #fff;
@@ -92,7 +97,7 @@ const ProfileSubMenu = styled.div`
     font-size: .9rem;
     margin-top: 6px; z-index: 100;
     animation-name: ${growIn};
-    animation-duration: 200ms;
+    animation-duration: .25s;
     animation-timing-function: transform ease-in, opacity ease-in;
 
     ::before {
@@ -135,47 +140,38 @@ const SubMenuLink = styled(Link)`
     }
 `;
 
-const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme }) => {
+const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme, user }) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-    const handleToggleTheme = e => {
-        e.preventDefault();
-        toggleMenu();
-        changeTheme();
-    };
-
     const _buildProfileSubMenu = isMenuOpen => (
         isMenuOpen && <ProfileSubMenu>
-            <SubMenuList>
+            <SubMenuList onClick={toggleMenu}>
                 <SubMenuListItem>
-                    <SubMenuLink to='' onClick={handleToggleTheme}>
-                        {theme === "light" ? "Dark" : "Light"} Mode
+                    <SubMenuLink onClick={changeTheme}>
+                        {theme === "light" ? "Dark Mode" : "Light Mode"}
                     </SubMenuLink>
-                    <SubMenuLink to='' onClick={e => e.preventDefault()}>
-                        Password</SubMenuLink>
-                    <SubMenuLink to='/logout' onClick={e => {
-                        e.preventDefault();
-                        toggleMenu();
-                        logout();
-                    }}>
-                        Log out</SubMenuLink>
+                    <SubMenuLink to='/change-password'>Change Password</SubMenuLink>
+                    <SubMenuLink to='/change-profile'>Change Profile</SubMenuLink>
+                    <SubMenuLink onClick={logout}>Log out</SubMenuLink>
                 </SubMenuListItem>
             </SubMenuList>
         </ProfileSubMenu>
     )
 
+    const displayName = user.fullName || username;
+
     return (
         <StyledHeader>
             <Container>
                 <HeaderBody>
-                    <HeaderText>Scheduling<span>App</span></HeaderText>
+                    <HeaderText to="">Scheduling<span>App</span></HeaderText>
                     <Actions>
                         {isLoggedIn ?
                             <Profile>
-                                <strong>{username}</strong>
+                                <strong>{displayName}</strong>
                                 <LetterAvatar onClick={toggleMenu}>
-                                    {username.substr(0, 1)}
+                                    {displayName.substr(0, 1)}
                                 </LetterAvatar>
                                 {_buildProfileSubMenu(isMenuOpen)}
                             </Profile> :
@@ -188,12 +184,8 @@ const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme }) => {
 };
 
 const mapStateToProps = state => ({
-    theme: state.ui.theme
+    theme: state.ui.theme,
+    user: state.auth.user,
 })
 
-const mapDispatchToProps = dispatch => ({
-    changeTheme: () => dispatch(changeTheme()),
-    logout: () => dispatch(logout()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, { changeTheme, logout })(Header);

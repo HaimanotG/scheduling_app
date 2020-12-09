@@ -113,10 +113,8 @@ const mapStateToProps = state => ({
     loading: state.teacher.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    addTeacher: ({ name }) => dispatch(addTeacher({ name })),
-    updateTeacher: ({ name, id }) => dispatch(updateTeacher({ name, id })),
-    deleteTeacher: id => dispatch(deleteTeacher(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeacherForm);
+export default connect(mapStateToProps, {
+    addTeacher,
+    updateTeacher,
+    deleteTeacher,
+})(TeacherForm);

@@ -23,7 +23,7 @@ const cols = [
 class RoomList extends Component {
 
     componentDidMount() {
-        this.props.loadRooms();
+        this.props.fetchRooms();
     }
 
     handleAdd = e => {
@@ -55,8 +55,6 @@ const mapStateToProps = state => ({
     loading: state.room.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadRooms: () => dispatch(fetchRooms()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomList);
+export default connect(mapStateToProps, {
+    fetchRooms,
+})(RoomList);

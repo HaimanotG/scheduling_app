@@ -1,35 +1,37 @@
-import { localStore, history } from "../_helpers";
-import { LOGIN, CHECK_USER, LOGOUT } from "../_constants/action-types";
+import { localStore } from "../_helpers";
+import { LOGIN, CHECK_USER, LOGOUT, CHANGE_PASSWORD } from "../_constants/action-types";
 
 const initialState = {
-    isLoading: false,
+    loading: false,
     user: {}
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case LOGIN.REQUEST:
-            return { ...state, isLoading: true }
+        case CHECK_USER.REQUEST:
+        case CHANGE_PASSWORD.REQUEST:
+            return { ...state, loading: true }
+
         case LOGIN.FAILURE:
-            return { ...state, isLoading: false };
+        case CHANGE_PASSWORD.FAILURE:
+            return { ...state, loading: false };
+
         case LOGIN.SUCCESS:
             localStore.set("user", action.payload);
-            return { ...state, isLoading: false, user: action.payload };
+            return { ...state, loading: false, user: action.payload };
 
-        case CHECK_USER.REQUEST:
-            return { ...state, isLoading: true };
         case CHECK_USER.SUCCESS:
             const user = localStore.get("user");
-            if (user.role === 'admin' && state.isLoading) {
-                history.push("/admin")
-            } else if (user.role === 'head' && state.isLoading) {
-                history.push("/head/room/add");
-            };
-            return { ...state, isLoading: false, user };
+            return { ...state, loading: false, user };
+            
         case CHECK_USER.FAILURE:
         case LOGOUT:
             localStore.remove("user");
-            return { ...state, isLoading: false, user: {} };
+            return { ...state, loading: false, user: {} };
+
+        case CHANGE_PASSWORD.SUCCESS:
+            return { ...state, loading: false, }
         default:
             return state;
     }

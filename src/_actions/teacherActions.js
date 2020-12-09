@@ -24,7 +24,7 @@ export const addTeacher = ({ name }) => ({
     next: ADD_TEACHER,
     successMessage: "1 Teacher Added",
     failureMessage: "Failed Adding Teacher",
-    onSuccessRedirect: "/head/teachers"
+    onSuccessRedirect: "/head/teacher"
   }
 });
 
@@ -37,7 +37,7 @@ export const updateTeacher = ({ name, id }) => ({
     next: UPDATE_TEACHER,
     successMessage: "1 Teacher Updated",
     failureMessage: "Failed Updating Teacher",
-    onSuccessRedirect: "/admin/head"
+    onSuccessRedirect: "/head/teacher"
   }
 });
 
@@ -49,6 +49,6 @@ export const deleteTeacher = id => ({
     next: DELETE_TEACHER,
     successMessage: "1 Teacher Deleted",
     failureMessage: "Failed Deleting Teacher",
-    onSuccessRedirect: "/head/teachers"
+    onSuccessRedirect: "/head/teacher"
   }
 });

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Spinner, Form, Container, Wrapper } from "../_styled-components";
 import { Button, TextField, Toast } from '../_components';
-import { auth } from '../_actions/authActions';
+import { login } from '../_actions/authActions';
 
 const LoginFormWrapper = styled(Wrapper)`
     margin: 10px auto;
@@ -16,7 +16,7 @@ const LoginFormWrapper = styled(Wrapper)`
     }
 `;
 
-const Login = ({ login, isLoading }) => {
+const Login = ({ login, loading }) => {
     const initialState = {
         username: "",
         password: ""
@@ -40,7 +40,7 @@ const Login = ({ login, isLoading }) => {
 
     const enabled = isFormValid(state);
 
-    if (isLoading) {
+    if (loading) {
         return <Spinner />;
     }
 
@@ -70,9 +70,7 @@ const Login = ({ login, isLoading }) => {
     );
 };
 const mapStateToProps = state => ({
-    isLoading: state.auth.isLoading,
+    loading: state.auth.loading,
 })
-const mapDispatchToProps = dispatch => ({
-    login: ({ username, password }) => dispatch(auth({ username, password })),
-})
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, { login })(Login);

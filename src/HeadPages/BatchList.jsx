@@ -27,7 +27,7 @@ const cols = [
 class BatchList extends Component {
 
     componentDidMount() {
-        this.props.loadBatches();
+        this.props.fetchBatches();
     }
 
     handleAdd = e => {
@@ -59,8 +59,6 @@ const mapStateToProps = state => ({
     loading: state.batch.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadBatches: () => dispatch(fetchBatches()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(BatchList);
+export default connect(mapStateToProps, {
+    fetchBatches
+})(BatchList);

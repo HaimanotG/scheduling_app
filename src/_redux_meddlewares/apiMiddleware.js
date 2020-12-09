@@ -1,7 +1,7 @@
 import { API } from "../_constants/action-types";
-import { authHeader, history } from '../_helpers';
+import { authHeader } from '../_helpers';
 import axiosInstance from '../_services/axios';
-import { setMessage } from '../_actions/uiActions';
+import { setMessage , redirect } from '../_actions/uiActions';
 
 export default ({ getState, dispatch }) => next => async action => {
     if (action.type !== API) {
@@ -24,8 +24,7 @@ export default ({ getState, dispatch }) => next => async action => {
                     response = {
                         data: {
                             sessionToken: response.headers['x-auth-token'],
-                            username: response.data.username,
-                            role: response.data.role
+                            ...response.data,
                         }
                     }
                 }
@@ -48,7 +47,7 @@ export default ({ getState, dispatch }) => next => async action => {
             }
 
             if (action.payload.onSuccessRedirect) {
-                history.push(action.payload.onSuccessRedirect);
+                dispatch(redirect(action.payload.onSuccessRedirect));
             }
         } else {
             dispatch({ type: FAILURE, payload: { error: "Something went wrong!" } });
@@ -62,7 +61,6 @@ export default ({ getState, dispatch }) => next => async action => {
         const { message } = error;
         
         dispatch({ type: FAILURE, payload: { error: message } });
-
         if (action.payload.failureMessage) {
             dispatch(setMessage({ text: message || action.payload.failureMessage, type: "warning" }));
         }

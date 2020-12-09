@@ -27,7 +27,7 @@ const makeDepartments = departments =>
 
 class DepartmentList extends Component {
     componentDidMount() {
-        this.props.loadDepartments();
+        this.props.fetchDepartments();
     }
     render() {
         if (this.props.loading) {
@@ -51,8 +51,6 @@ const mapStateToProps = state => ({
     loading: state.admin.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadDepartments: () => dispatch(fetchDepartments()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DepartmentList);
+export default connect(mapStateToProps, {
+    fetchDepartments,
+})(DepartmentList);

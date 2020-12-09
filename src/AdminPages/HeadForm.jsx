@@ -138,10 +138,9 @@ class HeadForm extends React.Component {
 const mapStateToProps = state => ({
     loading: state.admin.loading,
 })
-const mapDispatchToProps = dispatch => ({
-    registerHead: ({ username, password }) => dispatch(registerHead({ username, password })),
-    updateHead: ({ username,id }) => dispatch(updateHead({ username,id })),
-    deleteHead: id => dispatch(deleteHead(id)),
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeadForm);
+export default connect(mapStateToProps, {
+    registerHead,
+    updateHead,
+    deleteHead
+})(HeadForm);

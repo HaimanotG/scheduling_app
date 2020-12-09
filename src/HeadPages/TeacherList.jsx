@@ -19,7 +19,7 @@ const cols = [
 class TeacherList extends Component {
 
     componentDidMount() {
-        this.props.loadTeachers();
+        this.props.fetchTeachers();
     }
 
     handleAdd = e => {
@@ -51,8 +51,6 @@ const mapStateToProps = state => ({
     loading: state.teacher.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadTeachers: () => dispatch(fetchTeachers()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeacherList);
+export default connect(mapStateToProps, {
+    fetchTeachers,
+})(TeacherList);

@@ -26,7 +26,7 @@ const cols = [
 class HeadList extends Component {
     
     componentDidMount() {
-        this.props.loadHeads();
+        this.props.fetchHeads();
     }
 
     handleAdd = e => {
@@ -52,8 +52,10 @@ const mapStateToProps = state => ({
     loading: state.admin.loading,
 })
 
-const mapDispatchToProps = dispatch => ({
-    loadHeads: () => dispatch(fetchHeads()),
-})
+// const mapDispatchToProps = dispatch => ({
+//     loadHeads: () => dispatch(fetchHeads()),
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeadList);
+export default connect(mapStateToProps, {
+    fetchHeads
+})(HeadList);
