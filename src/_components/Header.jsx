@@ -41,7 +41,7 @@ const Actions = styled.div`
     }
 `;
 
-const HeaderText = styled(Link)`
+const HeaderText = styled.h3`
     text-decoration: none;
     color: #fff;
     letter-spacing: 1.12px; 
@@ -119,7 +119,11 @@ const SubMenuList = styled.ul`
     overflow: hidden;
 `;
 
-const SubMenuListItem = styled.li``;
+const SubMenuListItem = styled.li`
+    :not(:last-child) {
+        border-bottom: 1.2px solid #eee;
+    }
+`;
 
 const SubMenuLink = styled(Link)`
     display: block;
@@ -127,10 +131,6 @@ const SubMenuLink = styled(Link)`
     color: #000;
     text-decoration: none;
     transition: all .25s ease-out;
-
-    :not(:last-child) {
-        border-bottom: 1.2px solid #ddd;
-    }
 
     :hover {
         overflow: hidden;
@@ -151,12 +151,18 @@ const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme, user })
                     <SubMenuLink onClick={changeTheme}>
                         {theme === "light" ? "Dark Mode" : "Light Mode"}
                     </SubMenuLink>
+                </SubMenuListItem>
+                <SubMenuListItem>
                     <SubMenuLink to='/change-password'>Change Password</SubMenuLink>
-                    <SubMenuLink to='/change-profile'>Change Profile</SubMenuLink>
-                    <SubMenuLink onClick={logout}>Log out</SubMenuLink>
+                </SubMenuListItem>
+                <SubMenuListItem>
+                    <SubMenuLink to='/change-profile'>Profile</SubMenuLink>
+                </SubMenuListItem>
+                <SubMenuListItem>
+                    <SubMenuLink to="/login" onClick={logout}>Log out</SubMenuLink>
                 </SubMenuListItem>
             </SubMenuList>
-        </ProfileSubMenu>
+        </ProfileSubMenu >
     )
 
     const displayName = user.fullName || username;
@@ -165,7 +171,7 @@ const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme, user })
         <StyledHeader>
             <Container>
                 <HeaderBody>
-                    <HeaderText to="">Scheduling<span>App</span></HeaderText>
+                    <HeaderText>Scheduling<span>App</span></HeaderText>
                     <Actions>
                         {isLoggedIn ?
                             <Profile>

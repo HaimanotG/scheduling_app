@@ -91,5 +91,9 @@ const mapStateToProps = state => ({
     loading: state.auth.loading
 })
 
-export default connect(mapStateToProps,
-    { loadTheme, checkSession, clearMessage, clearRedirect })(AppWithRouter);
+export default connect(mapStateToProps, {
+    loadTheme,
+    checkSession,
+    clearMessage,
+    clearRedirect
+})(AppWithRouter);

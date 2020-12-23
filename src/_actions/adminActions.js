@@ -35,7 +35,7 @@ export const registerHead = ({ username, password }) => ({
         body: { username, password },
         method: "post",
         next: ADD_HEAD,
-        successMessage: "1 Head Registered Successfully",
+        successMessage: "1 Head Registered",
         failureMessage: "Failed Registering Head",
         onSuccessRedirect: "/admin/head"
     },
@@ -48,12 +48,11 @@ export const updateHead = ({ username, id }) => ({
         body: { username },
         method: "patch",
         next: UPDATE_HEAD,
-        successMessage: "1 Head Updated Successfully",
+        successMessage: "1 Head Updated",
         failureMessage: "Failed Deleting Head",
         onSuccessRedirect: "/admin/head"
     },
 })
-
 
 export const deleteHead = id => ({
     type: API,
@@ -61,7 +60,7 @@ export const deleteHead = id => ({
         url: `/users/${id}`,
         method: "delete",
         next: DELETE_HEAD,
-        successMessage: "1 Head Deleted Successfully",
+        successMessage: "1 Head Deleted",
         failureMessage: "Failed Deleting Head",
         onSuccessRedirect: "/admin/head"
     }
@@ -74,8 +73,9 @@ export const addDepartment = ({ name, head }) => ({
         body: { name, head },
         method: "post",
         next: ADD_DEPARTMENT,
-        successMessage: "1 Department Added Successfully",
-        failureMessage: "Failed Adding Department"
+        successMessage: "1 Department Added",
+        failureMessage: "Failed Adding Department",
+        onSuccessRedirect: "/admin/department"
     },
 })
 
@@ -87,7 +87,8 @@ export const updateDepartment = ({ name, head, id }) => ({
         method: "patch",
         next: UPDATE_DEPARTMENT,
         successMessage: "1 Department Updated Successfully",
-        failureMessage: "Failed Updating Department"
+        failureMessage: "Failed Updating Department",
+        onSuccessRedirect: "/admin/department"
     }
 })
 
@@ -97,7 +98,8 @@ export const deleteDepartment = id => ({
         url: `/admin/departments/${id}`,
         method: "delete",
         next: DELETE_DEPARTMENT,
-        successMessage: "1 Department Deleted Successfully",
-        failureMessage: "Failed Deleting Department"
+        successMessage: "1 Department Deleted",
+        failureMessage: "Failed Deleting Department",
+        onSuccessRedirect: "/admin/department"
     }
 })

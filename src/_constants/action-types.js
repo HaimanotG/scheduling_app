@@ -34,6 +34,11 @@ export const ADD_BATCH = asyncActionType("ADD_BATCH");
 export const UPDATE_BATCH = asyncActionType("UPDATE_BATCH");
 export const DELETE_BATCH = asyncActionType("DELETE_BATCH");
 
+export const FETCH_COURSES = asyncActionType("FETCH_COURSES");
+export const ADD_COURSE = asyncActionType("ADD_COURSE");
+export const UPDATE_COURSE = asyncActionType("UPDATE_COURSE");
+export const DELETE_COURSE = asyncActionType("DELETE_COURSE");
+
 export const API = "API";
 export const LOGOUT = "LOGOUT";
 
