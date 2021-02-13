@@ -6,6 +6,9 @@ import { Form, Container, Wrapper, Spinner } from '../_styled-components';
 
 import { changePassword } from '../_actions/authActions';
 
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
+
 const initialState = {
     oldPassword: "",
     newPassword: "",
@@ -21,10 +24,38 @@ class ChangePassword extends React.Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        const { oldPassword, newPassword } = this.state;
+        const { oldPassword, newPassword, confirmNewPassword } = this.state;
+        const schema = {
+            oldPassword: {
+                string: true,
+                required: true,
+                min_length: 6,
+                password: true
+            },
+            newPassword: {
+                string: true,
+                required: true,
+                min_length: 6,
+                password: true
+            },
+            confirmNewPassword: {
+                string: true,
+                required: true,
+                min_length: 6,
+                password: true,
+                confirmPassword: true
+            }
+        }
+        const errors = validate(schema, { oldPassword, newPassword, confirmNewPassword })
+        if (confirmNewPassword !== newPassword) {
+            errors.push('Two Passwords must match');
+        }
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
         this.props.changePassword({ oldPassword, newPassword })
     };
-    
+
     isFormValid = state => {
         return (
             state.oldPassword.length > 6 &&
@@ -35,7 +66,8 @@ class ChangePassword extends React.Component {
     }
 
     render() {
-        const enabled = this.isFormValid(this.state);
+        // const enabled = this.isFormValid(this.state);
+        const enabled = true;
 
         if (this.props.loading) {
             return <Spinner />;
@@ -50,12 +82,14 @@ class ChangePassword extends React.Component {
                             value={oldPassword}
                             type={"password"}
                             onChange={this.onChange}
+                            label={"Old Password"}
                         />
                         <TextField
                             name={"newPassword"}
                             value={newPassword}
                             type={"password"}
                             onChange={this.onChange}
+                            label={"New Password"}
                         />
 
                         <TextField
@@ -63,6 +97,7 @@ class ChangePassword extends React.Component {
                             value={confirmNewPassword}
                             type={"password"}
                             onChange={this.onChange}
+                            label={"Confirmnewpassword"}
                         />
                         <Button
                             label={"Change Password"}
@@ -80,5 +115,6 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
-    changePassword
+    changePassword,
+    setMessage
 })(ChangePassword);

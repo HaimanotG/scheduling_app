@@ -1,7 +1,7 @@
 import { API } from "../_constants/action-types";
 import { authHeader } from '../_helpers';
 import axiosInstance from '../_services/axios';
-import { setMessage , redirect } from '../_actions/uiActions';
+import { setMessage, redirect } from '../_actions/uiActions';
 
 export default ({ getState, dispatch }) => next => async action => {
     if (action.type !== API) {
@@ -54,15 +54,21 @@ export default ({ getState, dispatch }) => next => async action => {
             if (action.payload.failureMessage) {
                 dispatch(setMessage({ text: action.payload.failureMessage, type: "warning" }));
             }
+            if (action.payload.onFailureRedirect) {
+                dispatch(redirect(action.payload.onFailureRedirect));
+            }
         }
 
     } catch (e) {
         const { error } = e.response.data;
         const { message } = error;
-        
+
         dispatch({ type: FAILURE, payload: { error: message } });
         if (action.payload.failureMessage) {
             dispatch(setMessage({ text: message || action.payload.failureMessage, type: "warning" }));
+        }
+        if (action.payload.onFailureRedirect) {
+            dispatch(redirect(action.payload.onFailureRedirect));
         }
     }
 };

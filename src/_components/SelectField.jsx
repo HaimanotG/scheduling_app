@@ -49,7 +49,7 @@ const SelectFormGroup = styled(FormGroup)`
     // }
 `;
 
-const Select = ({ options, onChange, name, value }) => {
+const Select = ({ options, onChange, name, value, label }) => {
     return (
         <SelectFormGroup>
             <StyledSelect id={name} onChange={onChange} name={name} value={value}>
@@ -59,7 +59,7 @@ const Select = ({ options, onChange, name, value }) => {
                     </StyledOption>
                 ))}
             </StyledSelect>
-            <Label htmlFor={name} data-label={name} />
+            <Label htmlFor={name} data-label={label || name} />
         </SelectFormGroup>
     );
 };

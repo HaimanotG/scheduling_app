@@ -39,6 +39,8 @@ export const ADD_COURSE = asyncActionType("ADD_COURSE");
 export const UPDATE_COURSE = asyncActionType("UPDATE_COURSE");
 export const DELETE_COURSE = asyncActionType("DELETE_COURSE");
 
+export const FETCH_SEMESTERS = asyncActionType('FETCH_SEMESTERS');
+
 export const API = "API";
 export const LOGOUT = "LOGOUT";
 

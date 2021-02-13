@@ -43,7 +43,6 @@ class BatchList extends Component {
         return (
             <Container>
                 <Button label={"Add Batch +"} onClick={this.handleAdd} round />
-                <Button label={"Courses"} onClick={e => this.props.history.push("/head/course")} round />
                 <DataTable data={this.props.batches} cols={cols} />
             </Container>
         );

@@ -15,7 +15,7 @@ export const fetchBatches = () => ({
     }
 });
 
-export const addBatch = ({  name, classRoom, labRoom, }) => ({
+export const addBatch = ({  name, classRoom, labRoom, more=false }) => ({
     type: API,
     payload: {
         url: "/department/batches",
@@ -24,7 +24,7 @@ export const addBatch = ({  name, classRoom, labRoom, }) => ({
         next: ADD_BATCH,
         successMessage: "1 Batch Added",
         failureMessage: "Failed Adding Batch ",
-        onSuccessRedirect: "/head/batch"
+        onSuccessRedirect: more ? "/head/batch/add" : "/head/batch"
     }
 });
 

@@ -15,7 +15,7 @@ export const fetchTeachers = () => ({
   }
 });
 
-export const addTeacher = ({ name }) => ({
+export const addTeacher = ({ name, more = false }) => ({
   type: API,
   payload: {
     url: "/department/teachers",
@@ -24,7 +24,7 @@ export const addTeacher = ({ name }) => ({
     next: ADD_TEACHER,
     successMessage: "1 Teacher Added",
     failureMessage: "Failed Adding Teacher",
-    onSuccessRedirect: "/head/teacher"
+    onSuccessRedirect: more ? "/head/teacher/add" : "/head/teacher"
   }
 });
 

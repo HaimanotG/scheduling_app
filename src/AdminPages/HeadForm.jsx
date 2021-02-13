@@ -7,6 +7,9 @@ import { Form, Container, Wrapper, Spinner } from '../_styled-components';
 
 import { registerHead, updateHead, deleteHead } from '../_actions/adminActions';
 
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
+
 const initialState = {
     username: "",
     password: "",
@@ -40,10 +43,49 @@ class HeadForm extends React.Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        const { username, password } = this.state;
+        
         if (this.props.isEditing) {
+            const { username} = this.state;
+                const schema = {
+                    username: {
+                        string: true,
+                        required: true,
+                        min_length: 2
+                    }
+                }
+            const errors = validate(schema, { username })
+            if (errors.length > 0) {
+                return this.props.setMessage({ text: errors[0], type: "warning" });
+            }
             this.props.updateHead({ username, id: this.props.match.params.userId })
         } else {
+            const { username, password, confirmPassword} = this.state;
+                const schema = {
+                    username: {
+                        string: true,
+                        required: true,
+                        min_length: 2
+                    },
+                    password: {
+                        string: true,
+                        required: true,
+                        min_length: 6,
+                        password: true
+                    },
+                    confirmPassword: {
+                        string: true,
+                        required: true,
+                        min_length: 6,
+                        password: true
+                    }
+                }
+            const errors = validate(schema, { username, password, confirmPassword })
+            if (password !== confirmPassword) {
+                errors.push('Two Passwords must match');
+            }
+            if (errors.length > 0) {
+                return this.props.setMessage({ text: errors[0], type: "warning" });
+            }
             this.props.registerHead({ username, password })
         }
     };
@@ -78,7 +120,8 @@ class HeadForm extends React.Component {
     }
 
     render() {
-        const enabled = this.isFormValid(this.state);
+        // const enabled = this.isFormValid(this.state);
+        const enabled = true;
         if (this.props.loading) {
             return <Spinner />;
         }
@@ -142,5 +185,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     registerHead,
     updateHead,
-    deleteHead
+    deleteHead,
+    setMessage
 })(HeadForm);

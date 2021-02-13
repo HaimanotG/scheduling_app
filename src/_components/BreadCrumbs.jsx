@@ -39,6 +39,7 @@ const RightChevron = styled.svg`
 
 const Breadcrumbs = ({ path }) => {
     const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    
     const clean = str => {
         let clean = str;
         if (clean.charAt(0) === '/') {
@@ -51,9 +52,9 @@ const Breadcrumbs = ({ path }) => {
     };
 
     const cleanPath = clean(path);
-    let crumbs = cleanPath.split('/').filter(p => p.charAt(0) !== '5').map(p =>
+    let crumbs = cleanPath.split('/').filter(p => (p.charAt(0) !== '5' && p.charAt(0) !== '6')).map(p =>
         ({ name: capitalize(p), path: path.substr(0, path.indexOf(p) + p.length) }));
-
+    
     for (let i = 0; i < crumbs.length; i++) {
         if (crumbs[i].name === 'Edit' || crumbs[i].name === 'Add') {
             crumbs[i].name = crumbs[i].name + " " + crumbs[i - 1].name;

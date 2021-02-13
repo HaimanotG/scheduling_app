@@ -26,6 +26,9 @@ export const checkSession = () => ({
         method: "get",
         next: CHECK_USER,
         onSuccessRedirect: "$toRole",
+        onFailureRedirect: "/",
+        // onSuccessRedirect:"/head/editSchedule/602716821a3f881b3c82e648"
+        // onSuccessRedirect: "/change-profile"
     }
 });
 

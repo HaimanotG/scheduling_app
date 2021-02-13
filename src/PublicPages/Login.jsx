@@ -6,6 +6,8 @@ import { Spinner, Form, Container, Wrapper } from "../_styled-components";
 import { Button, TextField, Toast } from '../_components';
 import { login } from '../_actions/authActions';
 
+import validate from '../_helpers/validate';
+
 const LoginFormWrapper = styled(Wrapper)`
     margin: 10px auto;
     border-left: 6px solid var(--colorPrimary);
@@ -38,7 +40,15 @@ const Login = ({ login, loading }) => {
         login({ username, password });
     };
 
-    const enabled = isFormValid(state);
+    const enabled = true;
+    // const schema = validate().objects({
+    //     username: validate().string().min(4).required(),
+    //     password: validate().string().min(6).required(),
+    // });
+
+    // console.log(schema);
+
+    // const error = schema.validate(this.state);
 
     if (loading) {
         return <Spinner />;

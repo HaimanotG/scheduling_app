@@ -13,7 +13,11 @@ import {
     RoomList,
     RoomForm,
     BatchList,
-    BatchForm
+    BatchForm,
+    CourseForm,
+    CourseList,
+    ViewSchedule,
+    EditSchedule
 } from "./HeadPages";
 
 import {
@@ -124,5 +128,35 @@ export default [{
         isEditing: true,
         role: UserRole.HEAD
     },
-
+    {
+        path: "/head/batch/:batchId/course",
+        component: CourseList,
+        role: UserRole.HEAD
+    },
+    {
+        path: "/head/batch/:batchId/course/add",
+        component: CourseForm,
+        role: UserRole.HEAD
+    },
+    {
+        path: "/head/batch/:batchId/course/edit/:courseId",
+        component: CourseForm,
+        isEditing: true,
+        role: UserRole.HEAD
+    },
+    {
+        path: "/head/schedule",
+        component: ViewSchedule,
+        role: UserRole.HEAD
+    },
+    {
+        path: "/head/schedule/:department/:batch",
+        component: ViewSchedule,
+        role: UserRole.HEAD
+    },
+    {
+        path: "/head/editSchedule/:scheduleId",
+        component: EditSchedule,
+        role: UserRole.HEAD
+    }
 ];

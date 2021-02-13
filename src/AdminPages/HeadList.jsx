@@ -41,7 +41,11 @@ class HeadList extends Component {
         return (
             <Container>
                 <Button label={"Add Head +"} onClick={this.handleAdd} round />
-                <DataTable data={this.props.heads} cols={cols} />
+                {
+                    this.props.heads.length === 0 ? (
+                        <h3 style={{ color: 'red' }}>You Haven't Added Any Head Yet!</h3>
+                    ) : <DataTable data={this.props.heads} cols={cols} />
+                }
             </Container>
         );
     }
@@ -51,10 +55,6 @@ const mapStateToProps = state => ({
     heads: state.admin.heads,
     loading: state.admin.loading,
 })
-
-// const mapDispatchToProps = dispatch => ({
-//     loadHeads: () => dispatch(fetchHeads()),
-// })
 
 export default connect(mapStateToProps, {
     fetchHeads

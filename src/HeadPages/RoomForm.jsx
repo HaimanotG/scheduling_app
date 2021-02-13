@@ -10,6 +10,8 @@ import {
 } from '../_actions/roomActions';
 
 import GenericServices from '../_services/GenericServices';
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
 
 const initialState = {
     name: "",
@@ -46,12 +48,48 @@ class RoomForm extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         const { name, isLab } = this.state;
+        const schema = {
+            name: {
+                string: true,
+                required: true,
+                min_length: 3
+            },
+            isLab: {
+                boolean: true,
+                required: true
+            }
+        }
+        const errors = validate(schema, { name, isLab })
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
         if (this.props.isEditing) {
             this.props.updateRoom({ name, isLab, id: this.props.match.params.roomId })
         } else {
             this.props.addRoom({ name, isLab });
         }
     };
+
+    handleSubmitAndContinue = async e => {
+        e.preventDefault();
+        const { name, isLab } = this.state;
+        const schema = {
+            name: {
+                string: true,
+                required: true,
+                min_length: 3
+            },
+            isLab: {
+                boolean: true,
+                required: true
+            }
+        }
+        const errors = validate(schema, { name, isLab })
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
+        this.props.addRoom({ name, isLab, more: true });
+    }
 
     toggleShowConfirmation = e => {
         this.setState({
@@ -91,7 +129,7 @@ class RoomForm extends Component {
 
                         {!this.props.isEditing && <Button
                             label={"Save and Continue Adding"}
-                            accent
+                            accent onClick={this.handleSubmitAndContinue}
                             disabled={!enabled} />
                         }
 
@@ -123,5 +161,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     addRoom,
     updateRoom,
-    deleteRoom
+    deleteRoom,
+    setMessage
 })(RoomForm);

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { GenericServices } from '../_services';
 
 import { Wrapper, Container } from "../_styled-components";
+import { ToggleSwitch } from "../_components";
 
 const AdminHeader = styled.h4`
     background: var(--colorPrimary);
@@ -44,6 +46,10 @@ const ActionBar = styled.div`
         font-size: .95em;
         padding: 8px 10px;
     }
+
+    > p {
+        vertical-align: middle;
+    }
 `;
 
 const ActionGroup = styled.div`
@@ -66,30 +72,58 @@ const Actions = styled.div`
     }
 `;
 
-const Admin = () => {
-    return (
-        <Container>
-            <Wrapper>
-                <AdminHeader>
-                    <Anchor to={'/admin'}>Admin</Anchor>
-                </AdminHeader>
-                <ActionBar>
-                    <ActionGroup>
-                        <Anchor to={'/admin/head'}>Head</Anchor>
-                        <Actions>
-                            <Anchor to={'/admin/head/add'}>Add</Anchor>
-                        </Actions>
-                    </ActionGroup>
-                    <ActionGroup>
-                        <Anchor to={'/admin/department'}>Department</Anchor>
-                        <Actions>
-                            <Anchor to={'/admin/department/add'}>Add</Anchor>
-                        </Actions>
-                    </ActionGroup>
-                </ActionBar>
-            </Wrapper>
-        </Container>
-    )
-};
+class Admin extends React.Component {
+    state = {
+        semester: ''
+    }
 
+    async componentDidMount() {
+        let { data } = await GenericServices.get('/admin/currentSemester');
+        if (data) {
+            this.setState({
+                semester: data.currentSemester
+            })
+        }
+    }
+
+    handleChange = async e => {
+        const currentSemester = this.state.semester === 'First' ? 'Second' : 'First';
+        let { data } = await GenericServices.post('/admin/currentSemester', { currentSemester });
+        if (data) {
+            this.setState({
+                semester: currentSemester
+            })
+        }
+    }
+
+    render() {
+        return (
+            <Container>
+                <Wrapper>
+                    <AdminHeader>
+                        <Anchor to={'/admin'}>Admin</Anchor>
+                    </AdminHeader>
+                    <ActionBar>
+                        <ActionGroup>
+                            <Anchor to={'/admin/head'}>Head</Anchor>
+                            <Actions>
+                                <Anchor to={'/admin/head/add'}>Add</Anchor>
+                            </Actions>
+                        </ActionGroup>
+                        <ActionGroup>
+                            <Anchor to={'/admin/department'}>Department</Anchor>
+                            <Actions>
+                                <Anchor to={'/admin/department/add'}>Add</Anchor>
+                            </Actions>
+                        </ActionGroup>
+                        <ActionGroup>
+                            <ToggleSwitch onChange={this.handleChange} value={this.state.semester} />
+                            <p>{this.state.semester} semester</p>
+                        </ActionGroup>
+                    </ActionBar>
+                </Wrapper>
+            </Container>
+        )
+    }
+}
 export default Admin;

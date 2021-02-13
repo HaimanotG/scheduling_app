@@ -11,6 +11,9 @@ import {
     updateDepartment
 } from '../_actions/adminActions';
 
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
+
 const initialState = {
     name: "",
     head: "",
@@ -50,10 +53,31 @@ class DepartmentForm extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         const { head, name } = this.state;
+        let fields = { name };
+        if (head !== "") {
+            fields = { ...fields, head }
+        }
+
+        const schema = {
+            name: {
+                string: true,
+                required: true,
+                min_length: 2
+            },
+            head: {
+                string: true,
+                required: true
+            }
+        }
+        const errors = validate(schema, { ...fields })
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
+
         if (this.props.isEditing) {
             this.props.updateDepartment({ name, head, id: this.props.match.params.departmentId })
         } else {
-            this.props.addDepartment({ name, head });
+            this.props.addDepartment({ ...fields });
         }
     };
 
@@ -127,4 +151,5 @@ export default connect(mapStateToProps, {
     addDepartment,
     updateDepartment,
     deleteDepartment,
+    setMessage
 })(DepartmentForm);

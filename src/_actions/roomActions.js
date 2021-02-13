@@ -15,7 +15,7 @@ export const fetchRooms = () => ({
   }
 });
 
-export const addRoom = ({ name, isLab }) => ({
+export const addRoom = ({ name, isLab, more = false }) => ({
   type: API,
   payload: {
     url: "/department/rooms",
@@ -24,7 +24,7 @@ export const addRoom = ({ name, isLab }) => ({
     next: ADD_ROOM,
     successMessage: "1 Room Added",
     failureMessage: "Failed Adding Room ",
-    onSuccessRedirect: "/head/room"
+    onSuccessRedirect: more ? "/head/room/add" : "/head/room"
   }
 });
 

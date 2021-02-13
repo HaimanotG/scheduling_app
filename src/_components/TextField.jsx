@@ -16,14 +16,18 @@ const Input = styled.input`
     :focus {
         border: .8px solid var(--accent);
     }
+
+    :disabled {
+        opacity: .5;
+    }
 `;
 
-const TextField = ({ name, type = "text", onChange, required = true, value = "" }) => {
+const TextField = ({ name, type = "text", onChange, required = true, value = "", label, disabled=false }) => {
     return (
         <FormGroup>
             <Input type={type} name={name} id={name} value={value}
-                onChange={onChange} required={required} />
-            <Label htmlFor={name} data-label={name} />
+                onChange={onChange} required={required} disabled={disabled}/>
+            <Label htmlFor={name} data-label={label || name} />
         </FormGroup>
     )
 };

@@ -35,7 +35,11 @@ class TeacherList extends Component {
         return (
             <Container>
                 <Button label={"Add Teacher +"} onClick={this.handleAdd} round />
-                <DataTable data={this.props.teachers} cols={cols} />
+                {
+                    this.props.teachers.length === 0 ? (
+                        <h3 style={{ color: 'red' }}>You Haven't Added Any Teacher Yet!</h3>
+                    ) : <DataTable data={this.props.teachers} cols={cols} />
+                }
             </Container>
         );
     }

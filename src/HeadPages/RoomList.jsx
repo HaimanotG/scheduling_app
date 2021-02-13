@@ -39,7 +39,11 @@ class RoomList extends Component {
         return (
             <Container>
                 <Button label={"Add Room +"} onClick={this.handleAdd} round />
-                <DataTable data={this.props.rooms} cols={cols} />
+                {
+                    this.props.rooms.length === 0 ? (
+                        <h3 style={{ color: 'red' }}>You Haven't Added Any Room Yet!</h3>
+                    ) : <DataTable data={this.props.rooms} cols={cols} />
+                }
             </Container>
         );
     }

@@ -5,6 +5,9 @@ import { TextField, Button } from '../_components';
 import { Form, Container, Wrapper, Spinner } from '../_styled-components';
 import { changeProfile } from '../_actions/authActions';
 
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
+
 const initialState = {
     email: "",
     fullName: "",
@@ -28,6 +31,23 @@ class Profile extends React.Component {
     handleSubmit = async e => {
         e.preventDefault();
         const { email, fullName } = this.state;
+        const schema = {
+            email: {
+                string: true,
+                required: true,
+                min_length: 6,
+                email: true,
+            },
+            fullName: {
+                string: true,
+                required: true,
+                min_length: 6,
+            },
+        }
+        const errors = validate(schema, { email, fullName })
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
         this.props.changeProfile({ email, fullName, id: this.props.user && this.props.user._id })
     };
 
@@ -39,7 +59,8 @@ class Profile extends React.Component {
     }
 
     render() {
-        const enabled = this.isFormValid(this.state);
+        // const enabled = this.isFormValid(this.state);
+        const enabled = true;
         if (this.props.loading) {
             return <Spinner />;
         }
@@ -55,6 +76,7 @@ class Profile extends React.Component {
                         />
                         <TextField
                             name={"fullName"}
+                            label={"Fullname"}
                             value={fullName}
                             onChange={this.onChange}
                         />
@@ -74,4 +96,4 @@ const mapStateToProps = state => ({
     user: state.auth.user,
 })
 
-export default connect(mapStateToProps, { changeProfile })(Profile);
+export default connect(mapStateToProps, { changeProfile, setMessage })(Profile);

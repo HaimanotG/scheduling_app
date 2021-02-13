@@ -1,7 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
+import { GenericServices } from '../_services';
+import { setMessage } from '../_actions/uiActions';
 import { Wrapper, Container } from "../_styled-components";
 
 const AdminHeader = styled.h4`
@@ -65,8 +67,14 @@ const Actions = styled.div`
         }
     }
 `;
-
-const Head = () => {
+// const handleGenerateButton = async e => {
+//     e.preventDefault();
+//     const { data } = await GenericServices.get("/department/schedule");
+//     if (data.success) {
+//         this.props.setMessage({ text: 'Schedule generated successfully', type: 'success' })
+//     }
+// }
+const Head = ({ setMessage }) => {
     return (
         <Container>
             <Wrapper>
@@ -92,10 +100,22 @@ const Head = () => {
                             <Anchor to={'/head/batch/add'}>Add</Anchor>
                         </Actions>
                     </ActionGroup>
+                    <ActionGroup>
+                        <Anchor to={'/head/schedule'}>Schedule</Anchor>
+                        <Actions>
+                            <Anchor to={'/head/schedule/generate'} onClick={async e => {
+                                e.preventDefault();
+                                const { data } = await GenericServices.get("/department/schedule");
+                                if (data.success) {
+                                    setMessage({ text: 'Schedule generated successfully', type: 'success' })
+                                }
+                            }}>Generate</Anchor>
+                        </Actions>
+                    </ActionGroup>
                 </ActionBar>
             </Wrapper>
         </Container>
     )
 };
 
-export default Head
+export default connect(null, { setMessage })(Head);

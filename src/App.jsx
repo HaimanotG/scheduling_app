@@ -12,6 +12,8 @@ import { Header, Footer, Breadcrumbs, ToastPortal } from './_components';
 import { loadTheme, clearMessage, clearRedirect } from './_actions/uiActions';
 import { checkSession } from "./_actions/authActions";
 import privateRoutes from './privateRoutes';
+import ViewSchedule from "./HeadPages/ViewSchedule";
+import ViewScheduleForTeachers from "./PublicPages/ViewScheduleForTeachers";
 
 const Page = styled.div`
     display: grid;
@@ -57,6 +59,15 @@ class App extends Component {
                         <Breadcrumbs path={this.props.location.pathname} />
                         <Switch>
                             <Route exact path="/" component={() => <Home />} />
+                            <Route exact path="/schedule/:department/:batch"
+                                component={props => <ViewSchedule {...props} />} />
+                            <Route exact path="/schedule"
+                                component={props => <ViewSchedule {...props} />} />
+                            <Route exact
+                                path="/schedule/teacher/:department/:teacher"
+                                component={props => <ViewScheduleForTeachers {...props} />} />
+                            <Route exact path="/schedule/teacher"
+                                component={() => <ViewScheduleForTeachers {...this.props} />} />
                             {privateRoutes.map(({ path, role, isEditing, component: Component }) => (
                                 <Route
                                     key={path} exact
@@ -64,7 +75,7 @@ class App extends Component {
                                     component={props =>
                                         isLoggedIn && (role === 'ALL' || role === userRole) ? (
                                             <Component {...props} isEditing={isEditing} />
-                                        ) : <Redirect to="/login" />
+                                        ) : <Redirect to="/" />
                                     }
                                 />
                             ))}

@@ -12,6 +12,8 @@ import {
 import { fetchRooms } from '../_actions/roomActions';
 
 import GenericServices from '../_services/GenericServices';
+import { validate } from '../_helpers';
+import { setMessage } from '../_actions/uiActions';
 
 const initialState = {
     name: "",
@@ -55,12 +57,68 @@ class BatchForm extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         const { name, classRoom, labRoom } = this.state;
+        let fields = { name };
+        if (classRoom !== "") {
+            fields = { ...fields, classRoom }
+        }
+        if (labRoom !== "") {
+            fields = { ...fields, labRoom }
+        }
+        const schema = {
+            name: {
+                string: true,
+                required: true,
+                min_length: 2
+            },
+            classRoom: {
+                string: true,
+            },
+            labRoom: {
+                string: true,
+            }
+        }
+        const errors = validate(schema, { ...fields })
+        console.log(errors);
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
         if (this.props.isEditing) {
             this.props.updateBatch({ name, classRoom, labRoom, id: this.props.match.params.batchId })
         } else {
             this.props.addBatch({ name, classRoom, labRoom });
         }
     };
+
+    handleSubmitAndContinue = async e => {
+        e.preventDefault();
+        const { name, classRoom, labRoom } = this.state;
+        let fields = { name };
+        if (classRoom !== "") {
+            fields = { ...fields, classRoom }
+        }
+        if (labRoom !== "") {
+            fields = { ...fields, labRoom }
+        }
+        const schema = {
+            name: {
+                string: true,
+                required: true,
+                min_length: 2
+            },
+            classRoom: {
+                string: true,
+            },
+            labRoom: {
+                string: true,
+            }
+        }
+        const errors = validate(schema, { name, classRoom, labRoom })
+        console.log(errors);
+        if (errors.length > 0) {
+            return this.props.setMessage({ text: errors[0], type: "warning" });
+        }
+        this.props.addBatch({ ...fields, more: true });
+    }
 
     toggleShowConfirmation = e => {
         this.setState({
@@ -93,12 +151,14 @@ class BatchForm extends Component {
                             options={this.getRoomsOptions(this.props.rooms, false)}
                             onChange={this.handleChange}
                             name={"classRoom"}
+                            label={"Classroom"}
                         />
                         <SelectField
                             value={this.state.labRoom}
                             options={this.getRoomsOptions(this.props.rooms, true)}
                             onChange={this.handleChange}
-                            name={"labRoom"} />
+                            name={"labRoom"}
+                            label={"Labroom"} />
 
                         <Button
                             label={this.props.isEditing ? "Update" : "Save"}
@@ -107,7 +167,7 @@ class BatchForm extends Component {
 
                         {!this.props.isEditing && <Button
                             label={"Save and Continue Adding"}
-                            accent
+                            accent onClick={this.handleSubmitAndContinue}
                             disabled={!enabled} />
                         }
 
@@ -116,6 +176,13 @@ class BatchForm extends Component {
                                 label={"Delete"}
                                 warning
                                 onClick={this.toggleShowConfirmation}
+                            />
+                        }
+                        {this.props.isEditing &&
+                            <Button
+                                label={"Courses"} info
+                                onClick={e =>
+                                    this.props.history.push(`/head/batch/${this.props.match.params.batchId}/course`)}
                             />
                         }
                     </Form>
@@ -144,4 +211,5 @@ export default connect(mapStateToProps, {
     addBatch,
     updateBatch,
     deleteBatch,
+    setMessage
 })(BatchForm);

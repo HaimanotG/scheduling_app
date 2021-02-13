@@ -10,6 +10,7 @@ import SelectField from './SelectField';
 import Toast from "./Toast";
 import ToastPortal from './ToastPortal';
 import CheckBox from './CheckBox';
+import ToggleSwitch from './ToggleSwitch';
 
 export {
     Footer,
@@ -23,5 +24,6 @@ export {
     SelectField,
     Toast,
     ToastPortal,
-    CheckBox
+    CheckBox,
+    ToggleSwitch
 }

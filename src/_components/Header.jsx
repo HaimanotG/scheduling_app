@@ -143,12 +143,15 @@ const SubMenuLink = styled(Link)`
 const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme, user }) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
+    const onChangeTheme = e => {
+        e.preventDefault();
+        changeTheme();
+    }
     const _buildProfileSubMenu = isMenuOpen => (
         isMenuOpen && <ProfileSubMenu>
             <SubMenuList onClick={toggleMenu}>
                 <SubMenuListItem>
-                    <SubMenuLink onClick={changeTheme}>
+                    <SubMenuLink onClick={onChangeTheme} to="/">
                         {theme === "light" ? "Dark Mode" : "Light Mode"}
                     </SubMenuLink>
                 </SubMenuListItem>
@@ -172,6 +175,7 @@ const Header = ({ isLoggedIn, logout, username = "", changeTheme, theme, user })
             <Container>
                 <HeaderBody>
                     <HeaderText>Scheduling<span>App</span></HeaderText>
+                    {/* {!isLoggedIn && <p>home schedule schedule for teachers</p>} */}
                     <Actions>
                         {isLoggedIn ?
                             <Profile>
